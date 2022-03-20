@@ -9,7 +9,7 @@ import pickle
 import os
 
 prepare_directory('./trashfigure')
-
+prepare_directory('./models')
 
 def save_model(model,fname=__file__):
     with open("./models/"+string_now()+"_"+file_name(fname)+'.pickle', mode='wb') as f:
