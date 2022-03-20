@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 
-from generate_dataset import generate_data_sequence as data
+from generate_datasets import generate_data_sequence as data
 from generate_matrix import *
 from utils import *
 
