@@ -6,7 +6,7 @@ import sys
 import os
 
 from generate_datasets.generate_data_sequence import generate_white_noise as data
-from utils import plot1,plot_MC
+from utils import calc_MC, plot1,plot_MC
 from explorer import common
 from _network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
 
@@ -63,6 +63,7 @@ class Config():
         self.cnt_overflow=None
 
 def execute(c):
+    np.random.seed(c.seed)
     if True:
         T = c.MM
         #U,D = generate_white_noise(c.delay,T=T+200,)
@@ -89,9 +90,11 @@ def execute(c):
 
     validation = model.validate(train_data=Up,target_data=Dp)
 
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    _,MC = calc_MC(model.Yp,Dp,model.delay)
+    print("MC={:.2f}".format(MC))
 
     if c.plot:
+        Us,Rs,Hx,Hp,Yp = model.show_recode()
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.plot,save=1,dir_name = "trashfigure",fig_name="fig1")
         plot_MC(Yp,Dp,delay=c.delay,show = c.plot,save=1,dir_name = "trashfigure",fig_name="mc1")
 

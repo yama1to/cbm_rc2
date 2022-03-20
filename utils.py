@@ -99,14 +99,18 @@ def plot2(Up,Hp,Yp,Dp,show = 1,save=1,dir_name = "trashfigure",fig_name="fig1"):
     ax.plot(Dp)
     if show :plt.show()
     if save:plt.savefig("./{}/{}".format(dir_name,fig_name))
-    
-def plot_MC(Yp,Dp,delay=20,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1"):
+
+
+def calc_MC(Yp,Dp,delay):
     DC = np.zeros(delay)
     for k in range(delay):
         corr = np.corrcoef(np.vstack((Dp.T[k, k:], Yp.T[k, k:])))   #相関係数
-        DC[k] = corr[0, 1] ** 2                                     #決定係数 = 相関係数 **2
-
+        DC[k] = corr[0, 1] ** 2    #決定係数 = 相関係数 **2
     MC = np.sum(DC)
+    return DC,MC
+    
+def plot_MC(Yp,Dp,delay=20,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1"):               
+    DC,MC = calc_MC(Yp,Dp,delay)
     plt.plot(DC)
     plt.ylabel("determinant coefficient")
     plt.xlabel("Delay k")
