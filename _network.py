@@ -1,3 +1,4 @@
+# Copyright (c) 2022 Katori lab. All Rights Reserved
 import numpy as np
 from generate_matrix import *
 from tqdm import tqdm

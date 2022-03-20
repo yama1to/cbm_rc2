@@ -1,3 +1,4 @@
+# Copyright (c) 2022 Katori lab. All Rights Reserved
 import numpy as np
 import matplotlib.pyplot as plt
 from explorer.common import prepare_directory

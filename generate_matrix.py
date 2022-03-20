@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Katori lab. All Rights Reserved
+# Copyright (c) 2022 Katori lab. All Rights Reserved
 import numpy as np
 
 def generate_random_matrix(Nx,Ny,alpha,beta,distribution="one",normalization="sd",diagnal=False):
