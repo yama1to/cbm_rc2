@@ -1,3 +1,5 @@
+# Copyright (c) 2022 Katori lab. All Rights Reserved
+
 import argparse
 import numpy as np
 
@@ -78,7 +80,7 @@ def execute(c):
                 dataset=c.dataset,seed=c.seed,
                 NN=c.NN,MM=c.MM,MM0 = c.MM0,Nu = c.Nu,Nh= c.Nh,Ny = c.Ny,Temp=c.Temp,
                 alpha_i = c.alpha_i,alpha_r = c.alpha_r,alpha_b = c.alpha_b,alpha_s = c.alpha_s,
-                beta_i = c.betai,beta_r = c.beta_r,beta_b = c.beta_b,
+                beta_i = c.beta_i,beta_r = c.beta_r,beta_b = c.beta_b,
                 lambda0 = c.lambda0,delay = c.delay)
 
     model.generate_network()
