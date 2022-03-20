@@ -11,22 +11,25 @@ from tqdm import tqdm
 
 from utils import *
 
-class ReservoirComputingbasedonChaoticBoltzmannMachine:
-    def __init__(self,plot = 1,NN=2**8,MM=2200,MM0 = 200,Nu = 1,Nh:int = 100,Ny = 20,
+class ReservoirComputingbasedonChaoticBoltzmannMachine():
+    def __init__(self,columns = None,csv = None,id  = None,
+                plot = 1,show = False,savefig = False,fig1 = "fig1.png",
+                dataset=6,seed:int=0,
+                NN=2**8,MM=2200,MM0 = 200,Nu = 1,Nh:int = 100,Ny = 20,
                 Temp=1,alpha_i = 0.24,alpha_r = 0.7,alpha_b = 0.,alpha_s = 0.5,
                 beta_i = 0.9,beta_r = 0.2,beta_b = 0.,lambda0 = 0.,delay = 20):
         # columns, csv, id: データの管理のために必須の変数
-        self.columns = None # 結果をCSVに保存する際のコラム
-        self.csv = None # 結果を保存するファイル
-        self.id  = None
+        self.columns = columns # 結果をCSVに保存する際のコラム
+        self.csv = csv # 結果を保存するファイル
+        self.id  = id
         self.plot = plot # 図の出力のオンオフ
-        self.show = False # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
-        self.savefig = False
-        self.fig1 = "fig1.png" ### 画像ファイル名
+        self.show = show # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
+        self.savefig = savefig
+        self.fig1 = fig1 ### 画像ファイル名
 
         # config
-        self.dataset=6
-        self.seed:int=0 # 乱数生成のためのシード
+        self.dataset=dataset
+        self.seed:int=seed # 乱数生成のためのシード
         self.NN=NN # １サイクルあたりの時間ステップ
         self.MM=MM # サイクル数
         self.MM0 = MM0 #
