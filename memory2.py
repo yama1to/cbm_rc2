@@ -60,13 +60,10 @@ class Config():
         self.cnt_overflow=None
 
 def execute(c):
-    MM=2200
-    delay=20
-
     if True:
         T = c.MM
         #U,D = generate_white_noise(c.delay,T=T+200,)
-        U,D = data.generate_white_noise(delay,T=T+200,dist="uniform")
+        U,D = data.generate_white_noise(c.delay,T=T+200,dist="uniform")
         Up=U[200:]
         Dp=D[200:]
         ### training
@@ -92,7 +89,7 @@ def execute(c):
     Us,Rs,Hx,Hp,Yp = model.show_recode()
 
     plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = 1,save=1,dir_name = "trashfigure",fig_name="fig1")
-    plot_MC(Yp,Dp,delay=delay,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1")
+    plot_MC(Yp,Dp,delay=c.delay,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1")
 
 
 
