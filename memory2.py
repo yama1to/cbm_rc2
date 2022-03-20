@@ -2,11 +2,9 @@
 
 import argparse
 import numpy as np
-
-from generate_datasets import generate_data_sequence as data
-from generate_matrix import *
-from utils import *
-from explorer import *
+from generate_datasets.generate_data_sequence import generate_white_noise as data
+from utils import plot1,plot_MC
+from explorer import common
 from _network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
 
 class Config():
@@ -65,7 +63,7 @@ def execute(c):
     if True:
         T = c.MM
         #U,D = generate_white_noise(c.delay,T=T+200,)
-        U,D = data.generate_white_noise(c.delay,T=T+200,dist="uniform")
+        U,D = data(c.delay,T=T+200,dist="uniform")
         Up=U[200:]
         Dp=D[200:]
         ### training
