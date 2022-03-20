@@ -10,6 +10,7 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
                 dataset=6,seed:int=0,
                 NN=2**8,MM=2200,MM0 = 200,Nu = 1,Nh:int = 100,Ny = 20,
                 Temp=1,alpha_i = 0.24,alpha_r = 0.7,alpha_b = 0.,alpha_s = 0.5,
+                alpha0=0,alpha1=1,
                 beta_i = 0.9,beta_r = 0.2,beta_b = 0.,lambda0 = 0.,delay = 20):
         # columns, csv, id: データの管理のために必須の変数
         self.columns = columns # 結果をCSVに保存する際のコラム
@@ -40,8 +41,8 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         self.alpha_b = alpha_b
         self.alpha_s = alpha_s
 
-        self.alpha0 = 0#0.1
-        self.alpha1 = 1#-5.8
+        self.alpha0 = alpha0#0.1
+        self.alpha1 = alpha1#-5.8
 
         self.beta_i = beta_i
         self.beta_r = beta_r
@@ -92,12 +93,10 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         self.run_network(train_data,target_data)
         return self.Yp
 
-        
     def predict(self,train_data,target_data):
         
         return 
         
-
     def run_network(self,train_data,target_data):
         self.Hp = np.zeros((self.MM, self.Nh))
         self.Yp = np.zeros((self.MM, self.Ny))

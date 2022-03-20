@@ -17,7 +17,7 @@ def save_model(model,fname=__file__):
     
 
 def load_model(filename):
-    with open(filename, mode='rb') as f:
+    with open('./models/'+filename, mode='rb') as f:
         model = pickle.load(f)
     return model
 
@@ -108,7 +108,7 @@ def calc_MC(Yp,Dp,delay):
         DC[k] = corr[0, 1] ** 2    #決定係数 = 相関係数 **2
     MC = np.sum(DC)
     return DC,MC
-    
+
 def plot_MC(Yp,Dp,delay=20,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1"):               
     DC,MC = calc_MC(Yp,Dp,delay)
     plt.plot(DC)

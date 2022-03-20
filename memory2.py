@@ -1,12 +1,15 @@
 # Copyright (c) 2022 Katori lab. All Rights Reserved
 
 import argparse
+from fileinput import filename
 import numpy as np
 import sys
 import os
 
+from sympy import true
+
 from generate_datasets.generate_data_sequence import generate_white_noise as data
-from utils import calc_MC, plot1,plot_MC
+from utils import calc_MC, load_model, plot1,plot_MC, save_model
 from explorer import common
 from _network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
 
@@ -64,6 +67,9 @@ class Config():
 
 def execute(c):
     np.random.seed(c.seed)
+    load = 0 
+    save = 0
+
     if True:
         T = c.MM
         #U,D = generate_white_noise(c.delay,T=T+200,)
@@ -76,17 +82,24 @@ def execute(c):
         if max>0.5:
             Dp /= max*2
             Up /= max*2
+    if load:
+        model = load_model('20220321_071446_memory2.pickle')
+    else:
+        model = CBM(columns = c.columns,csv = c.csv,id  = c.id,
+                    plot = c.plot,show = c.show,savefig = c.savefig,fig1 = c.fig1,
+                    dataset=c.dataset,seed=c.seed,
+                    NN=c.NN,MM=c.MM,MM0 = c.MM0,Nu = c.Nu,Nh= c.Nh,Ny = c.Ny,Temp=c.Temp,
+                    alpha_i = c.alpha_i,alpha_r = c.alpha_r,alpha_b = c.alpha_b,alpha_s = c.alpha_s,
+                    alpha0=c.alpha0,alpha1=c.alpha1,
+                    beta_i = c.beta_i,beta_r = c.beta_r,beta_b = c.beta_b,
+                    lambda0 = c.lambda0,delay = c.delay)
 
-    model = CBM(columns = c.columns,csv = c.csv,id  = c.id,
-                plot = c.plot,show = c.show,savefig = c.savefig,fig1 = c.fig1,
-                dataset=c.dataset,seed=c.seed,
-                NN=c.NN,MM=c.MM,MM0 = c.MM0,Nu = c.Nu,Nh= c.Nh,Ny = c.Ny,Temp=c.Temp,
-                alpha_i = c.alpha_i,alpha_r = c.alpha_r,alpha_b = c.alpha_b,alpha_s = c.alpha_s,
-                beta_i = c.beta_i,beta_r = c.beta_r,beta_b = c.beta_b,
-                lambda0 = c.lambda0,delay = c.delay)
+        model.generate_network()
+        model.fit(train_data=Up,target_data=Dp)
 
-    model.generate_network()
-    model.fit(train_data=Up,target_data=Dp)
+
+    if save:
+        save_model(model=model,fname=__file__)
 
     validation = model.validate(train_data=Up,target_data=Dp)
 
