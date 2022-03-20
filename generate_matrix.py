@@ -1,7 +1,5 @@
 # Copyright (c) 2018 Katori lab. All Rights Reserved
-
 import numpy as np
-#import scipy.linalg
 
 def generate_random_matrix(Nx,Ny,alpha,beta,distribution="one",normalization="sd",diagnal=False):
     """
