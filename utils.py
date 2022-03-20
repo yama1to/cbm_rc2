@@ -1,9 +1,28 @@
 # Copyright (c) 2022 Katori lab. All Rights Reserved
 import numpy as np
 import matplotlib.pyplot as plt
-from explorer.common import prepare_directory
+from explorer.common import prepare_directory,string_now
+
+from copyreg import pickle
+import datetime 
+import pickle
+import os
 
 prepare_directory('./trashfigure')
+
+
+def save_model(model,fname=__file__):
+    with open("./models/"+string_now()+"_"+file_name(fname)+'.pickle', mode='wb') as f:
+        pickle.dump(model,f,protocol=2)
+    
+
+def load_model(filename):
+    with open(filename, mode='rb') as f:
+        model = pickle.load(f)
+    return model
+
+def file_name(fname):
+    return os.path.basename(str(os.path.splitext(fname)[0]))
 
 
 def fy(h):
@@ -80,6 +99,7 @@ def plot2(Up,Hp,Yp,Dp,show = 1,save=1,dir_name = "trashfigure",fig_name="fig1"):
     ax.plot(Dp)
     if show :plt.show()
     if save:plt.savefig("./{}/{}".format(dir_name,fig_name))
+
 def plot_MC(Yp,Dp,delay=20,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1"):
     DC = np.zeros(delay)
     for k in range(delay):
