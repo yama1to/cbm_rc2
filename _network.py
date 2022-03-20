@@ -2,7 +2,7 @@
 import numpy as np
 from generate_matrix import *
 from tqdm import tqdm
-from utils import *
+from utils import p2s
 
 class ReservoirComputingbasedonChaoticBoltzmannMachine():
     def __init__(self,columns = None,csv = None,id  = None,
