@@ -99,7 +99,7 @@ def plot2(Up,Hp,Yp,Dp,show = 1,save=1,dir_name = "trashfigure",fig_name="fig1"):
     ax.plot(Dp)
     if show :plt.show()
     if save:plt.savefig("./{}/{}".format(dir_name,fig_name))
-
+    
 def plot_MC(Yp,Dp,delay=20,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1"):
     DC = np.zeros(delay)
     for k in range(delay):

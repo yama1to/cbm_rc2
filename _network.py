@@ -98,7 +98,6 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         return 
         
 
-
     def run_network(self,train_data,target_data):
         self.Hp = np.zeros((self.MM, self.Nh))
         self.Yp = np.zeros((self.MM, self.Ny))
@@ -220,3 +219,5 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
             self.cnt_overflow += tmp
     def show_recode(self,):
         return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:]
+
+    

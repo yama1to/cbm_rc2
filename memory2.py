@@ -10,16 +10,13 @@ from utils import plot1,plot_MC
 from explorer import common
 from _network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
 
-
-
-
 class Config():
     def __init__(self):
         # columns, csv, id: データの管理のために必須の変数
         self.columns = None # 結果をCSVに保存する際のコラム
         self.csv = None # 結果を保存するファイル
         self.id  = None
-        self.plot = 1 # 図の出力のオンオフ
+        self.plot = 0 # 図の出力のオンオフ
         self.show = False # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
         self.savefig = False
         self.fig1 = "fig1.png" ### 画像ファイル名
@@ -27,7 +24,7 @@ class Config():
         # config
         self.dataset=6
         self.seed:int=1 # 乱数生成のためのシード
-        self.NN=2**8 # １サイクルあたりの時間ステップ
+        self.NN=2**2 # １サイクルあたりの時間ステップ
         self.MM=2200 # サイクル数
         self.MM0 = 200 #
 
@@ -94,8 +91,9 @@ def execute(c):
 
     Us,Rs,Hx,Hp,Yp = model.show_recode()
 
-    plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = 1,save=1,dir_name = "trashfigure",fig_name="fig1")
-    plot_MC(Yp,Dp,delay=c.delay,show = 1,save=1,dir_name = "trashfigure",fig_name="mc1")
+    if c.plot:
+        plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.plot,save=1,dir_name = "trashfigure",fig_name="fig1")
+        plot_MC(Yp,Dp,delay=c.delay,show = c.plot,save=1,dir_name = "trashfigure",fig_name="mc1")
 
 
 
