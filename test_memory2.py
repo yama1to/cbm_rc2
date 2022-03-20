@@ -3,6 +3,7 @@
 
 """
 import os
+import sys
 import numpy as np
 import pandas as pd
 import copy
@@ -15,8 +16,12 @@ from explorer import visualization as vs
 from explorer import randomsearch as rs
 from explorer import optimization as opt
 
+
 ### 共通設定
 from memory2 import Config
+
+
+
 config = Config()
 common.config  = config
 common.prefix  = "data%s_memory2" % common.string_now() # 実験名（ファイルの接頭辞）

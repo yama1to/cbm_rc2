@@ -2,10 +2,16 @@
 
 import argparse
 import numpy as np
+import sys
+import os
+
 from generate_datasets.generate_data_sequence import generate_white_noise as data
 from utils import plot1,plot_MC
 from explorer import common
 from _network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
+
+
+
 
 class Config():
     def __init__(self):
@@ -94,6 +100,7 @@ def execute(c):
 
 
 if __name__ == '__main__':
+    
     ap = argparse.ArgumentParser()
     ap.add_argument("-config", type=str)
     a = ap.parse_args()

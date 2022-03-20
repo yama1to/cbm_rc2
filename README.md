@@ -8,7 +8,7 @@ cbm_rc が煩雑になってきたので整理のためにオブジェクト指�
 # explorer
 探索アルゴリズムなどを行う。
 # generate_dataset
-各タスクのデータ生成を行う、
+各タスクのデータ生成を行う。
 # __init__.py
 上位からの呼び出し時に　_network.pyのクラスのimportを行う。
 # _network.py

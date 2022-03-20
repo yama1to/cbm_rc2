@@ -219,4 +219,4 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
             tmp = np.sum( np.heaviside( np.fabs(self.Hp[m+1]-self.Hp[m]) - 0.6 ,0))
             self.cnt_overflow += tmp
     def show_recode(self,):
-        return self.Us,self.Rs,self.Hx,self.Hp,self.Yp
+        return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:]
