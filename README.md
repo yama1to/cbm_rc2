@@ -1,6 +1,7 @@
 # Copyright (c) 2022 Katori lab. All Rights Reserved
 
 # cbm_rc2
+##### cbm_rcのオブジェクト指向版
 
 
 ## explorer/
