@@ -10,6 +10,7 @@ import copy
 import matplotlib.pyplot as plt
 from pandas.plotting import scatter_matrix
 
+
 from explorer import common
 from explorer import gridsearch as gs
 from explorer import visualization as vs
@@ -18,15 +19,16 @@ from explorer import optimization as opt
 
 
 ### 共通設定
-from memory2 import Config
-
-
+from main_memory2 import Config
+import warnings
+warnings.simplefilter('ignore')
+warnings.simplefilter('ignore', FutureWarning)
 
 config = Config()
 common.config  = config
 common.prefix  = "data%s_memory2" % common.string_now() # 実験名（ファイルの接頭辞）
 common.dir_path= "data/data%s_memory2" % common.string_now() # 実験データを出力するディレクトリのパス
-common.exe     = "python memory2.py " # 実行されるプログラム
+common.exe     = "python3 main_memory2.py " # 実行されるプログラム
 common.columns=['dataset','seed','id','NN','Nh','alpha_i','alpha_r','alpha_b','alpha_s',"alpha1",'beta_i','beta_r','beta_b',
 'Temp','lambda0',"delay",'RMSE1','RMSE2','cnt_overflow','MC']
 common.parallel= 1
