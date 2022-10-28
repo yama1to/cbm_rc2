@@ -2,9 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def narma_narma(N,seed=0):
+def generate_narma(N,delay,seed=0):
     N = N + 200
-    u,_ = generate_narma(N = N,seed=0)
+    u,_ = narma_narma(N,seed=seed,delay=delay)
     u = u/np.max(u)/2
     
     # Generate NARMA sequence
@@ -21,11 +21,10 @@ def narma_narma(N,seed=0):
         return u,d
     else:
         print("again")
-        return narma_narma(N=N,seed=seed+1)
+        return generate_narma(N,delay,seed=seed+1)
 
 
-def generate_narma(N,seed=0,delay=9):
-    
+def narma_narma(N,seed=0,delay=9):
     if type(seed)!=None : np.random.seed(seed=seed)
 
     """Generate NARMA sequence."""
@@ -34,6 +33,7 @@ def generate_narma(N,seed=0,delay=9):
 
     # Generate NARMA sequence
     d = np.zeros((N))
+    
     for i in range(N-1):
         d[i+1] = 0.3*d[i] + 0.05*d[i] * \
             np.sum(d[i-delay:i+1]) + 1.5*u[i-delay]*u[i] + 0.1
@@ -46,10 +46,10 @@ def generate_narma(N,seed=0,delay=9):
         return u,d
     else:
         print("again")
-        return generate_narma(N=N,seed=seed+1)
+        return narma_narma(N=N,seed=seed+1)
 
 if __name__ == '__main__':
-    u,d = generate_narma(1000)
+    u,d = narma_narma(1000)
     plt.plot(u)
     plt.plot(d)
     plt.show()

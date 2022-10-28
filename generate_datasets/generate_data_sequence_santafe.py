@@ -10,7 +10,6 @@ https://physionet.org/content/santa-fe/1.0.0/
     (i.e., the time interval between measurements in successive rows is 0.5 seconds).
 
 """
-from generate_data_sequence_approximation import generate_data
 import matplotlib.pyplot as plt 
 import numpy as np
 
@@ -38,11 +37,11 @@ def generate_data(data,future,train_num = 900,test_num = 500,):
 
 def generate_santafe(future = [1,2,3,4,5],train_num = 900,test_num = 500,):
     #"""
-    with open('santafeA.txt', 'r', encoding='UTF-8') as f:
+    with open('generate_datasets/santafeA.txt', 'r', encoding='UTF-8') as f:
         data = np.array(list(f)).astype(int)
 
     #"""
-    with open('santafeA2.txt', 'r', encoding='UTF-8') as f:
+    with open('generate_datasets/santafeA2.txt', 'r', encoding='UTF-8') as f:
         tmp =  np.array(list(f)).astype(int)
         #data = tmp
         data = np.hstack((data,tmp))
