@@ -70,7 +70,7 @@ def plot2(c):
     c.dist = dist_list[c.set]
     c.name = name_list[c.set]
     t = common.string_now()
-    
+
     for i in range(10):
         plt.plot(c.CAPACITY[i*(20):(i+1)*20],label="degree = "+str(1+i))
 
@@ -81,10 +81,11 @@ def plot2(c):
     plt.title("cbm::"+c.name+"::"+c.dist)
     plt.legend()
     
-    
-    na = "./trashfigure/ipc-fig/%s-ipc4_cbm_fixed_in_tar_%s.eps" % (t,str(c.set))
-    plt.savefig(na)
-    na = "./trashfigure/ipc-fig/%s-ipc4_cbm_fixed_in_tar_%s.png" % (t,str(c.set))
-    plt.savefig(na)
-    plt.show()
+    if c.savefig:
+        na = "./trashfigure/ipc-fig/%s-ipc4_cbm_fixed_in_tar_%s.eps" % (t,str(c.set))
+        plt.savefig(na)
+        na = "./trashfigure/ipc-fig/%s-ipc4_cbm_fixed_in_tar_%s.png" % (t,str(c.set))
+        plt.savefig(na)
+    if c.show :plt.show()
     plt.clf()
+    

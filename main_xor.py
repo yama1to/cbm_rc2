@@ -56,6 +56,7 @@ class Config():
         self.cnt_overflow=None
 
 def execute(c):
+    c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
     save = 1
@@ -77,7 +78,6 @@ def execute(c):
 
         model.generate_network()
         model.fit(train_data=Up,target_data=Dp)
-
 
     if save:
         save_model(model=model,fname=__file__)

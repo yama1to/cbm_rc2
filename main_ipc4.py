@@ -19,7 +19,7 @@ class Config():
         self.id  = None
         self.plot = 1 # 図の出力のオンオフ
         self.show = 1 # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
-        self.savefig = False
+        self.savefig = 1
         self.fig1 = "fig1.png" ### 画像ファイル名
 
         # config
@@ -30,7 +30,7 @@ class Config():
         self.MM0 = 200 #
 
         self.Nu = 1         #size of input
-        self.Nh:int = 100   #815 #size of dynamical reservior
+        self.Nh:int = 300   #815 #size of dynamical reservior
         self.Ny = 200        #size of output
 
         self.Temp=1
@@ -46,7 +46,7 @@ class Config():
         self.alpha1 = 1#-5.8
 
         self.beta_i = 0.1
-        self.beta_r = 0.9
+        self.beta_r = 0.1
         self.beta_b = 0.
 
         self.lambda0 = 0
@@ -58,14 +58,16 @@ class Config():
         # ResultsX
         self.cnt_overflow=None
 
+        self.MC = None
+
 def execute(c):
+    c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
     save = 1
 
     if True:
         U1,D1 = dataset(c.MM,)
-        print(U1.shape,D1.shape)
 
     if load:
         model = load_model('20220321_071446_'+__file__+'.pickle')
@@ -83,7 +85,6 @@ def execute(c):
         Up,Dp = U1,D1
         model.fit(train_data=Up,target_data=Dp)
 
-
     if save:
         save_model(model=model,fname=__file__)
 
@@ -94,7 +95,6 @@ def execute(c):
     print(c.MC, c.CAPACITY,c.ERR)
 
     if c.plot:
-        
         # plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
         plot(Up,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")
         plot2(c)

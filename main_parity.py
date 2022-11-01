@@ -56,6 +56,7 @@ class Config():
         self.cnt_overflow=None
 
 def execute(c):
+    c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
     save = 1

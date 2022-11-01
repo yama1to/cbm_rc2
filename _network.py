@@ -1,8 +1,8 @@
 # Copyright (c) 2022 Katori lab. All Rights Reserved
 import numpy as np
-from generate_matrix import *
+from cbm.generate_matrix import *
 from tqdm import tqdm
-from utils import p2s
+from cbm.utils import p2s
 
 class ReservoirComputingbasedonChaoticBoltzmannMachine():
     def __init__(self,columns = None,csv = None,id  = None,
@@ -11,7 +11,7 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
                 NN=2**8,MM=2200,MM0 = 200,Nu = 1,Nh:int = 100,Ny = 20,
                 Temp=1,alpha_i = 0.24,alpha_r = 0.7,alpha_b = 0.,alpha_s = 0.5,
                 alpha0=0,alpha1=1,
-                beta_i = 0.9,beta_r = 0.2,beta_b = 0.,lambda0 = 0.,delay = 20):
+                beta_i = 0.9,beta_r = 0.2,beta_b = 0.,lambda0 = 0.,do_not_use_tqdm = 0):
         # columns, csv, id: データの管理のために必須の変数
         self.columns = columns # 結果をCSVに保存する際のコラム
         self.csv = csv # 結果を保存するファイル
@@ -49,21 +49,13 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         self.beta_b = beta_b
 
         self.lambda0 = lambda0
+        self.do_not_use_tqdm = do_not_use_tqdm
 
-        self.delay = delay
-
-        # ResultsX
-        self.RMSE1=None
-        self.RMSE2=None
-        self.MC = None
-        self.MC1 = None 
-        self.MC2 = None
-        self.MC3 = None
-        self.MC4 = None
         self.cnt_overflow=None
 
     
     def generate_network(self,):
+        np.random.seed(seed=self.seed)
         self.Wr = generate_random_matrix(self.Nh,self.Nh,self.alpha_r,self.beta_r,distribution="one",normalization="sr",diagnal=0)
 
         #Wr = bm_weight()
@@ -75,8 +67,10 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
 
     def fit(self,train_data,target_data):
         self.run_network(train_data,target_data)
+        self.regression(self.Hp,target_data)
         
-        M = self.Hp[self.MM0:, :]
+    def regression(self,reservoir_state,target_data):
+        M = reservoir_state[self.MM0:, :]
         G = target_data[self.MM0:, :]
 
         ### Ridge regression
@@ -89,9 +83,9 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
             WoT = TMP1@M.T@G
             self.Wo =WoT.T
 
+
     def validate(self,train_data,target_data):
         self.run_network(train_data,target_data)
-        return self.Yp
 
     def predict(self,train_data,target_data):
         
@@ -132,7 +126,7 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         hp = np.zeros((self.Nh))
 
 
-        for n in tqdm(range(self.NN * self.MM)):
+        for n in tqdm(range(self.NN * self.MM),disable=self.do_not_use_tqdm):
             theta = np.mod(n/self.NN,1) # (0,1)
             rs_prev = rs
             hs_prev = hs.copy()
@@ -152,9 +146,9 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
             sum += self.Wi@(2*us-1) # 外部入力
             #sum += us
             #Wr = generate_random_matrix(self.Nh,self.Nh,self.alpha_r,self.beta_r,distribution="one",normalization="sr",diagnal=0)
-            #sum += Wr@(2*hs-1) # リカレント結合
+            sum += self.Wr@(2*hs-1) # リカレント結合
             #print(tmp.shape)
-            sum += self.Wr@(2*p2s(theta,hp)-1)
+            # sum += self.Wr@(2*p2s(theta,hp)-1)
             #sum+=  Wr@(2*p2s(theta,hp2)-1)/2
             #sum += Wr@(2*tmp[:,int(n%self.NN)]-1) # リカレント結合
 
@@ -216,7 +210,12 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
         for m in range(2,self.MM-1):
             tmp = np.sum( np.heaviside( np.fabs(self.Hp[m+1]-self.Hp[m]) - 0.6 ,0))
             self.cnt_overflow += tmp
+
     def show_recode(self,):
-        return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:]
+        if not self.plot:
+            return {},{},{},self.Hp[self.MM0:],self.Yp[self.MM0:]
+
+        else:
+            return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:]
 
     

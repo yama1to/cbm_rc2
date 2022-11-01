@@ -25,12 +25,12 @@ class Config():
         # config
         self.dataset=6
         self.seed:int=1 # 乱数生成のためのシード
-        self.NN=2**2 # １サイクルあたりの時間ステップ
+        self.NN=2**8 # １サイクルあたりの時間ステップ
         self.MM=2200 # サイクル数
         self.MM0 = 200 #
 
         self.Nu = 1         #size of input
-        self.Nh:int = 20   #815 #size of dynamical reservior
+        self.Nh:int = 200   #815 #size of dynamical reservior
         self.Ny = 20        #size of output
 
         self.Temp=1
@@ -57,13 +57,10 @@ class Config():
         self.RMSE1=None
         self.RMSE2=None
         self.MC = None
-        self.MC1 = None 
-        self.MC2 = None
-        self.MC3 = None
-        self.MC4 = None
         self.cnt_overflow=None
 
 def execute(c):
+    c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
     save = 1
@@ -74,7 +71,7 @@ def execute(c):
         Up,Dp = dataset(c.delay,T=T,dist="uniform")
 
     if load:
-        model = load_model('20220321_071446_memory2.pickle')
+        model = load_model('20220321_071446_'+__file__+'.pickle')
     else:
         model = CBM(columns = c.columns,csv = c.csv,id  = c.id,
                     plot = c.plot,show = c.show,savefig = c.savefig,fig1 = c.fig1,
@@ -87,7 +84,6 @@ def execute(c):
         model.generate_network()
         model.fit(train_data=Up,target_data=Dp)
 
-
     if save:
         save_model(model=model,fname=__file__)
 
@@ -96,10 +92,10 @@ def execute(c):
     Us,Rs,Hx,Hp,Yp = model.show_recode()
     Dp = Dp[c.MM0:]
 
-    _,MC = evaluate(Yp,Dp,c.delay)
+    _,c.MC = evaluate(Yp,Dp,c.delay)
     
 
-    print("MC={:.2f}".format(MC))
+    print("MC={:.2f}".format(c.MC))
 
     if c.plot:
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")

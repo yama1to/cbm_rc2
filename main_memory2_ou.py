@@ -6,8 +6,8 @@ import numpy as np
 import sys
 import os
 
-from tasks.narma_ou import dataset, evaluate, plot
-from cbm.utils import load_model, plot1,save_model
+from tasks.memory2_ou import dataset, evaluate, plot
+from cbm.utils import load_model, plot1, save_model
 from explorer import common
 from cbm._network import ReservoirComputingbasedonChaoticBoltzmannMachine as CBM
 
@@ -18,7 +18,7 @@ class Config():
         self.csv = None # 結果を保存するファイル
         self.id  = None
         self.plot = 1 # 図の出力のオンオフ
-        self.show = 1 # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
+        self.show = False # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
         self.savefig = False
         self.fig1 = "fig1.png" ### 画像ファイル名
 
@@ -26,32 +26,37 @@ class Config():
         self.dataset=6
         self.seed:int=1 # 乱数生成のためのシード
         self.NN=2**8 # １サイクルあたりの時間ステップ
-        self.MM=1000 # サイクル数
+        self.MM=2200 # サイクル数
         self.MM0 = 200 #
 
         self.Nu = 1         #size of input
         self.Nh:int = 100   #815 #size of dynamical reservior
-        self.Ny = 1        #size of output
+        self.Ny = 20        #size of output
 
         self.Temp=1
         self.dt=1.0/self.NN #0.01
 
         #sigma_np = -5
         self.alpha_i = 0.24
-        self.alpha_r = 0.1
+        self.alpha_r = 0.
         self.alpha_b = 0.
         self.alpha_s = 0.5
 
         self.alpha0 = 0#0.1
         self.alpha1 = 1#-5.8
 
-        self.beta_i = 0.1
-        self.beta_r = 0.9
+        self.beta_i = 0.5
+        self.beta_r = 0.2
         self.beta_b = 0.
 
-        self.lambda0 = 0.1
+        self.lambda0 = 0.
+
+        self.delay = 20
 
         # ResultsX
+        self.RMSE1=None
+        self.RMSE2=None
+        self.MC = None
         self.cnt_overflow=None
 
 def execute(c):
@@ -61,7 +66,9 @@ def execute(c):
     save = 1
 
     if True:
-        U1,D1,U2,D2 = dataset(c.MM,c.MM,)
+        T = c.MM
+        #U,D = generate_white_noise(c.delay,T=T+200,)
+        Up,Dp = dataset(c.delay,T=T)
 
     if load:
         model = load_model('20220321_071446_'+__file__+'.pickle')
@@ -74,28 +81,29 @@ def execute(c):
                     alpha0=c.alpha0,alpha1=c.alpha1,
                     beta_i = c.beta_i,beta_r = c.beta_r,beta_b = c.beta_b,
                     lambda0 = c.lambda0)
-
         model.generate_network()
-        Up,Dp = U1,D1
         model.fit(train_data=Up,target_data=Dp)
-
 
     if save:
         save_model(model=model,fname=__file__)
 
-    Up,Dp = U2,D2
     model.validate(train_data=Up,target_data=Dp)
+
     Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Dp = Dp[c.MM0:]
+
+    _,c.MC = evaluate(Yp,Dp,c.delay)
     
-    c.RMSE, c.NMSE,c.NRMSE = evaluate(model.Yp,Dp)
-    
+
+    print("MC={:.2f}".format(c.MC))
+
     if c.plot:
-        
-        plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
-        plot(Up,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")
+        plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
+        plot(Yp,Dp,delay=c.delay,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")
+
+
 
 if __name__ == '__main__':
-    
     ap = argparse.ArgumentParser()
     ap.add_argument("-config", type=str)
     a = ap.parse_args()
