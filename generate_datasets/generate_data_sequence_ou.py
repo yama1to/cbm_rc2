@@ -25,8 +25,9 @@ def OUdataset(N = 1000):
 
     t_init = 0
     t_end  = 100
-    
     dt     = float(t_end - t_init) / N
+    
+    
     y_init = 0
 
     global c_sigma,c_mu,c_theta
@@ -36,7 +37,8 @@ def OUdataset(N = 1000):
     c_sigma = 0.06
 
     ts = np.arange(t_init, t_end + dt, dt)
-    ys = np.zeros(N + 1)
+    ts = ts[:N+1]
+    ys = np.zeros(N+1)
 
     ys[0] = y_init
 

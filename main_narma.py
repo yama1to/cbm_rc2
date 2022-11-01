@@ -25,13 +25,13 @@ class Config():
         # config
         self.dataset=6
         self.seed:int=1 # 乱数生成のためのシード
-        self.NN=2**6 # １サイクルあたりの時間ステップ
-        self.MM=2200 # サイクル数
+        self.NN=2**8 # １サイクルあたりの時間ステップ
+        self.MM=1000 # サイクル数
         self.MM0 = 200 #
 
         self.Nu = 1         #size of input
-        self.Nh:int = 500   #815 #size of dynamical reservior
-        self.Ny = 10        #size of output
+        self.Nh:int = 100   #815 #size of dynamical reservior
+        self.Ny = 1        #size of output
 
         self.Temp=1
         self.dt=1.0/self.NN #0.01
@@ -49,7 +49,7 @@ class Config():
         self.beta_r = 0.9
         self.beta_b = 0.
 
-        self.lambda0 = 0.
+        self.lambda0 = 0.1
 
         # ResultsX
         self.cnt_overflow=None
