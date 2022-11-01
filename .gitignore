@@ -1,3 +1,11 @@
 data/
 __pycache__/
 trashfigure/
+models/
+generate_datasets/ti46wave/
+generate_datasets/ipc_dir/
+data/
+
+# generate_datasets/speech5a/
+# generate_datasets/speech5b/
+# generate_datasets/speech5c/
