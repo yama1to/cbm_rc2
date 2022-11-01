@@ -86,10 +86,10 @@ def execute(c):
 
     Up,Dp = U2,D2
     model.validate(train_data=Up,target_data=Dp)
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     
     c.NMSE,c.NRMSE = evaluate(model.Yp,Dp,normalize,c.MM)
-    
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
     if c.plot:
         
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")

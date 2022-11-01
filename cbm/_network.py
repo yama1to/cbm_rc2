@@ -213,9 +213,9 @@ class ReservoirComputingbasedonChaoticBoltzmannMachine():
 
     def show_recode(self,):
         if not self.plot:
-            return {},{},{},self.Hp[self.MM0:],self.Yp[self.MM0:]
+            return {},{},{},self.Hp[self.MM0:],self.Yp[self.MM0:],self.cnt_overflow
 
         else:
-            return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:]
+            return self.Us,self.Rs,self.Hx,self.Hp[self.MM0:],self.Yp[self.MM0:],self.cnt_overflow
 
     

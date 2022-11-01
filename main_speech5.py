@@ -92,11 +92,12 @@ def execute(c):
     y,d = run_model(c,model,U2,D2,num_test,num_steps_cochlear,mode='test')
     c.WSR = evaluate(y,d,num_test,mode='test')
 
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     
     
     Up = U2
     Dp = D2
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
     if c.plot:
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
         plot(Up,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")

@@ -18,8 +18,8 @@ class Config():
         self.csv = None # 結果を保存するファイル
         self.id  = None
         self.plot = 1 # 図の出力のオンオフ
-        self.show = False # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
-        self.savefig = False
+        self.show = 1 # 図の表示（plt.show()）のオンオフ、explorerは実行時にこれをオフにする。
+        self.savefig = 1
         self.fig1 = "fig1.png" ### 画像ファイル名
 
         # config
@@ -30,7 +30,7 @@ class Config():
         self.MM0 = 200 #
 
         self.Nu = 1         #size of input
-        self.Nh:int = 100   #815 #size of dynamical reservior
+        self.Nh:int = 20   #815 #size of dynamical reservior
         self.Ny = 20        #size of output
 
         self.Temp=1
@@ -38,15 +38,15 @@ class Config():
 
         #sigma_np = -5
         self.alpha_i = 0.24
-        self.alpha_r = 0.
+        self.alpha_r = 0.05
         self.alpha_b = 0.
         self.alpha_s = 0.5
 
         self.alpha0 = 0#0.1
         self.alpha1 = 1#-5.8
 
-        self.beta_i = 0.5
-        self.beta_r = 0.2
+        self.beta_i = 0.9
+        self.beta_r = 0.7
         self.beta_b = 0.
 
         self.lambda0 = 0.
@@ -89,13 +89,14 @@ def execute(c):
 
     model.validate(train_data=Up,target_data=Dp)
 
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     Dp = Dp[c.MM0:]
 
     _,c.MC = evaluate(Yp,Dp,c.delay)
     
 
     print("MC={:.2f}".format(c.MC))
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
 
     if c.plot:
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")

@@ -5,6 +5,9 @@ models/
 generate_datasets/ti46wave/
 generate_datasets/ipc_dir/
 data/
+ipc-fig/
+
+
 
 # generate_datasets/speech5a/
 # generate_datasets/speech5b/

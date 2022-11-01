@@ -25,7 +25,7 @@ class Config():
         # config
         self.dataset=6
         self.seed:int=1 # 乱数生成のためのシード
-        self.NN=2**8 # １サイクルあたりの時間ステップ
+        self.NN=2**2 # １サイクルあたりの時間ステップ
         self.MM=2200 # サイクル数
         self.MM0 = 200 #
 
@@ -89,14 +89,14 @@ def execute(c):
 
     model.validate(train_data=Up,target_data=Dp)
 
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     Dp = Dp[c.MM0:]
 
     _,c.MC = evaluate(Yp,Dp,c.delay)
     
 
     print("MC={:.2f}".format(c.MC))
-
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
     if c.plot:
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
         plot(Yp,Dp,delay=c.delay,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")

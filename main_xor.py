@@ -78,17 +78,17 @@ def execute(c):
 
         model.generate_network()
         model.fit(train_data=Up,target_data=Dp)
-
+    
     if save:
         save_model(model=model,fname=__file__)
 
     model.validate(train_data=Up,target_data=Dp)
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     
     c.BER = evaluate(model.Yp,Dp,c.MM)
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
     
     if c.plot:
-        
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
         plot(Up,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")
 
