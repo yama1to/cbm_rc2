@@ -5,6 +5,12 @@ import scipy.stats as st
 from scipy.special import factorial
 from tqdm import tqdm
 
+from concurrent.futures import ProcessPoolExecutor
+from tqdm import tqdm
+import os
+import time
+from explorer import common
+
 # http://solidstatephysics.blog.fc2.com/blog-entry-44.html.
 def Legendre(x,degree):
     P = 0
@@ -41,7 +47,7 @@ def Laguerre(x,degree):
     for k in range(degree+1):
         tmp = (-1)**k * factorial(degree)**2 * x**k
         tmp /= factorial(degree-k) * factorial(k)**2
-        P+=tmp
+        P += tmp
     return P
 
 def polynomial(name,x,degree):
@@ -63,7 +69,7 @@ def datasets(k=2,n = 2,
                   #dist="exponential",
                   seed=0,
                   new=0,
-                  save = 0):
+                  save = 0,):
     """
     k:遅延長
     n:多項式の次数
@@ -71,7 +77,6 @@ def datasets(k=2,n = 2,
     dist:入力の分布
     seed:乱数のシード値
     """
-    from explorer import common
     DIR = "./generate_datasets/ipc_dir/"
     DIR += str(T)
     common.create_directory(DIR)
@@ -115,55 +120,53 @@ def datasets(k=2,n = 2,
         np.save(DIR+"target_"+str(T)+"_"+str(int(n))+name+".npy",arr=d)
     return u,d
 
-
-
-
-
-if __name__=="__main__":
-    name_list = ["Legendre","Hermite","Chebyshev","Laguerre"]
-    dist_list = ["uniform","normal","arcsine","exponential"]
-
-    for i in tqdm(range(1,10+1)):
-        for j in range(4):
-            set = j
-            dist = dist_list[set]
-            name = name_list[set]
-            u,d = datasets(k=20,n = i,
-                        T=10200, 
-                        name=name,
-                        dist=dist,
+def for_func(pol,deg):
+    i=pol
+    datasets(k=20,n = deg,
+                        T=1200, 
+                        name=name_list[i],
+                        dist=dist_list[i],
                         #dist="exponential",
                         seed=0,
                         new=1,
-                        save = 1)
-            #plt.plot(u)
-            #plt.savefig("./all_fig/ipc_data_{0}-{1}-u.png".format(i,j))
-            #plt.clf()
-            #plt.plot(d)
-            #plt.savefig("./all_fig/ipc_data_{0}-{1}-d.png".format(i,j))
-            #plt.clf()
-            # if i==2:
-            #     print(i,j)
-            #     plt.plot(u,label = "u")
-            #     plt.plot(d,label="d")
-            #     plt.legend()
-            #     plt.show()
+                        save = 1,)
+
+def for_func1(idx,deg):
+    poly = list(range(4))
+    # tqdmで経過が知りたい時
+    with tqdm(total=len(poly)) as progress:
+        # 1. 引数にiterできないオブジェクトがある時
+        with ProcessPoolExecutor(max_workers=os.cpu_count() // 2) as executor:  # -----(2)
+            futures = []  # 処理結果を保存するlist
+            for i, pol in enumerate(poly):  # -------(3)
+                future = executor.submit(for_func,pol,deg)
+                future.add_done_callback(lambda p: progress.update()) # tqdmで経過が知りたい時
+                futures.append(future)
+            result = [f.result() for f in futures]
+
+    return idx,deg
 
 
-    # set = 0
-    # name = name_list[set]
-    # dist = dist_list[set]
-    # u,d = datasets(k=20,n = 2,
-    #             T=1000, 
-    #             name=name,
-    #             dist=dist,
-    #             #dist="exponential",
-    #             seed=0,
-    #             new=1,
-    #             save = 0)
-    # plt.plot(u)
-    # plt.show()
+def for_func2():
+    DEG = list(range(1,11))
+    DEG = list(reversed(DEG))
+    # tqdmで経過が知りたい時
+    with tqdm(total=len(DEG)) as progress:
+        # 1. 引数にiterできないオブジェクトがある時
+        with ProcessPoolExecutor(max_workers=os.cpu_count() // 2) as executor:  # -----(2)
+            futures = []  # 処理結果を保存するlist
+            for i, deg in enumerate(DEG):  # -------(3)
+                future = executor.submit(for_func1, i, deg)
+                future.add_done_callback(lambda p: progress.update()) # tqdmで経過が知りたい時
+                futures.append(future)
+            result = [f.result() for f in futures]
 
-    # plt.plot(d[:,:])
-    # plt.show()
-    # print(u.shape,d.shape)
+
+if __name__=="__main__":
+    global name_list, dist_list
+    name_list = ["Legendre","Hermite","Chebyshev","Laguerre"]
+    dist_list = ["uniform","normal","arcsine","exponential"]
+    
+
+    for_func2()#10x4の並列化
+          
