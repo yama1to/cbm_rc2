@@ -49,7 +49,7 @@ class Config():
         self.beta_r = 0.9
         self.beta_b = 0.
 
-        self.lambda0 = 0.1
+        self.lambda0 = 0.0001
 
         # ResultsX
         self.cnt_overflow=None
@@ -58,7 +58,7 @@ def execute(c):
     c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
-    save = 1
+    save = 0
 
     if True:
         U1,D1,U2,D2 = dataset(c.MM,c.MM,)
@@ -85,10 +85,10 @@ def execute(c):
 
     Up,Dp = U2,D2
     model.validate(train_data=Up,target_data=Dp)
-    Us,Rs,Hx,Hp,Yp = model.show_recode()
+    Us,Rs,Hx,Hp,Yp,c.cnt_overflow = model.show_recode()
     
     c.RMSE, c.NMSE,c.NRMSE = evaluate(model.Yp,Dp)
-    
+    print("OverFlow={:.2f}".format(c.cnt_overflow))
     if c.plot:
         
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")

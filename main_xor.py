@@ -59,7 +59,7 @@ def execute(c):
     c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
-    save = 1
+    save = 0
 
     if True:
         Up,Dp = dataset(c.MM,c.MM,)
@@ -87,7 +87,7 @@ def execute(c):
     
     c.BER = evaluate(model.Yp,Dp,c.MM)
     print("OverFlow={:.2f}".format(c.cnt_overflow))
-    
+
     if c.plot:
         plot1(Up,Us,Rs,Hx,Hp,Yp,Dp,show =c.show,save=c.savefig,dir_name = "trashfigure",fig_name="fig1")
         plot(Up,Hp,Yp,Dp,show = c.show,save=c.savefig,dir_name = "trashfigure",fig_name="mc1")

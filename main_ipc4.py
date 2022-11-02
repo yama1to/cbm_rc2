@@ -64,7 +64,7 @@ def execute(c):
     c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
-    save = 1
+    save = 0
 
     if True:
         U1,D1 = dataset(c.MM,)

@@ -49,7 +49,7 @@ class Config():
         self.beta_r = 0.9
         self.beta_b = 0.
 
-        self.lambda0 = 0.1
+        self.lambda0 = 0.0001
 
         # ResultsX
         self.cnt_overflow=None
@@ -58,7 +58,7 @@ def execute(c):
     c.seed = int(c.seed)
     np.random.seed(c.seed)
     load = 0 
-    save = 1
+    save = 0
 
     if True:
         U1,D1,U2,D2 = dataset(c.MM,c.MM,)
