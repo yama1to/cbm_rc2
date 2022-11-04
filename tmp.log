@@ -1,6 +1,9 @@
 test_ipc4.py
 test_memory2.py
+test_memory2_ou.py
 test_narma.py
+test_narma_ou.py
 test_parity.py
+test_santafe.py
 test_speech5.py
 test_xor.py

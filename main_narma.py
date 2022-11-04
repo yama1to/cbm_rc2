@@ -51,8 +51,13 @@ class Config():
 
         self.lambda0 = 0.0001
 
+        self.delay = 9
+        
         # ResultsX
         self.cnt_overflow=None
+        self.RMSE = None
+        self.NRMSE = None
+        self.NMSE = None
 
 def execute(c):
     c.seed = int(c.seed)
@@ -61,7 +66,7 @@ def execute(c):
     save = 0
 
     if True:
-        U1,D1,U2,D2 = dataset(c.MM,c.MM,)
+        U1,D1,U2,D2 = dataset(c.MM,c.MM,delay=c.delay)
 
     if load:
         model = load_model('20220321_071446_'+__file__+'.pickle')

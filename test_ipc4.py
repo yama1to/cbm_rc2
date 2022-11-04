@@ -67,7 +67,7 @@ def optimize(i=None,x=None):
 #     for i in range(10):
 #         optimize(i+1,x)
 
-# optimize()
+optimize()
 
 
 

@@ -61,7 +61,7 @@ def optimize():
     opt.minimize(target="NMSE",iteration=30,population=30,samples=4)
     #opt.minimize(TARGET=func,iteration=5,population=10,samples=4)
     common.config = opt.best_config # 最適化で得られた設定を基本設定とする
-#optimize()
+optimize()
 
 def plot1(x,y,ystd,ymin,ymax,color=None,width=1,label=None):
     # エラーバーをつけてグラフを描画、平均、標準偏差、最大値、最小値をプロットする。
@@ -107,6 +107,6 @@ def gs2():
     gridsearch("alpha_s",min=0.0,max=2,num=41,samples=ns)
     gridsearch("beta_i",min=0.0,max=1,num=41,samples=ns)
     gridsearch("beta_r",min=0.0,max=1,num=41,samples=ns)
-    gridsearch("Temp",min=0.0,max=10,num=41,samples=ns)
+    # gridsearch("Temp",min=0.0,max=10,num=41,samples=ns)
     #gridsearch("lambda0",min=0.0,max=10,num=41,samples=ns)
 gs2()

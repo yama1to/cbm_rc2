@@ -57,7 +57,7 @@ def optimize():
     opt.append("alpha_r",value=1,min=0.0,max=1,round=2)
     opt.append("alpha_s",value=0.01,min=0.0,max=2,round=2)
     # opt.append("Temp",value=2,min=1,max=5,round=1)
-    opt.minimize(target="WSR",iteration=30,population=30,samples=4)
+    opt.maximize(target="WSR",iteration=30,population=30,samples=4)
     #opt.minimize(TARGET=func,iteration=5,population=10,samples=4)
     common.config = opt.best_config # 最適化で得られた設定を基本設定とする
 optimize()

@@ -1,5 +1,5 @@
 #!/bin/sh
-DIR="$HOME/Downloads/SAKINO1024/cbm_rc2"
+DIR="$HOME/cbm_rc2"
 Tmp=$DIR/tmp.log 
 
 rm $Tmp

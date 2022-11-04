@@ -31,7 +31,7 @@ common.dir_path= "data/data%s_memory2" % common.string_now() # 実験データ�
 common.exe     = "python3 main_memory2.py " # 実行されるプログラム
 common.columns=['dataset','seed','id','NN','Nh','alpha_i','alpha_r','alpha_b','alpha_s',"alpha1",'beta_i','beta_r','beta_b',
 'Temp','lambda0',"delay",'RMSE1','RMSE2','cnt_overflow','MC']
-common.parallel= 1
+common.parallel= 128
 common.setup()
 common.report_common()
 common.report_config(config)
@@ -104,15 +104,15 @@ def gridsearch(X1,min=0,max=1,num=41,samples=10):
     vs.plt_output()
 
 def gs2():
-    ns=1
+    ns=10
     #gridsearch("Nh",min=50,max=700,num=41,samples=ns)
-    # gridsearch("alpha_r",min=0.00,max=1,num=41,samples=ns)
-    # gridsearch("alpha_i",min=0.00,max=1,num=41,samples=ns)
-    # gridsearch("alpha_s",min=0.0,max=2,num=41,samples=ns)
-    # gridsearch("beta_r",min=0.00,max=1,num=41,samples=ns)
-    # gridsearch("beta_i",min=0.00,max=1,num=41,samples=ns)
-    gridsearch("Temp",min=-256,max=256,num=4001,samples=ns)
+    gridsearch("alpha_r",min=0.00,max=1,num=41,samples=ns)
+    gridsearch("alpha_i",min=0.00,max=1,num=41,samples=ns)
     gridsearch("alpha_s",min=0.0,max=2,num=41,samples=ns)
+    gridsearch("beta_r",min=0.00,max=1,num=41,samples=ns)
+    gridsearch("beta_i",min=0.00,max=1,num=41,samples=ns)
+    # gridsearch("Temp",min=-256,max=256,num=4001,samples=ns)
+    # gridsearch("alpha_s",min=0.0,max=2,num=41,samples=ns)
     #gridsearch("delay",min=5,max=100,num=41,samples=ns)
     #gridsearch("lambda0",min=0.01,max=1.5,num=41,samples=ns)
 gs2()

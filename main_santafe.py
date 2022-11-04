@@ -51,9 +51,14 @@ class Config():
 
         self.lambda0 = 0.
 
+
         # ResultsX
-        self.BER = None
         self.cnt_overflow=None
+
+        self.RMSE = None
+        self.NRMSE = None
+        self.NMSE = None
+
 
 def execute(c):
     c.seed = int(c.seed)
@@ -62,7 +67,7 @@ def execute(c):
     save = 0
 
     if True:
-        U1,D1,U2,D2,normalize = dataset(c.MM,c.MM,)
+        U1,D1,U2,D2,normalize = dataset(c.MM,c.MM)
 
     if load:
         model = load_model('20220321_071446_'+__file__+'.pickle')
